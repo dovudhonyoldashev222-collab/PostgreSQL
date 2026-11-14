@@ -28,10 +28,6 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.BIGINT,
             allowNull: true,
         },
-        car_id: {
-            type: DataTypes.INTEGER,
-            allowNull: true,
-        },
     });
 
     User.beforeSave(async (user) => {

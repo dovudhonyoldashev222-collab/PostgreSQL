@@ -8,6 +8,7 @@ const validateVenue = (venue) => {
         location: Joi.string().allow(null, ""),
         scheme_id: Joi.number().integer().allow(null),
         district_id: Joi.number().integer().allow(null),
+        region_id: Joi.number().integer().required(),
     }).unknown(false);
 
     return schema.validate(venue);
@@ -21,6 +22,7 @@ const validateVenueUpdate = (venue) => {
         location: Joi.string().allow(null, ""),
         scheme_id: Joi.number().integer().allow(null),
         district_id: Joi.number().integer().allow(null),
+        region_id: Joi.number().integer(),
     }).min(1).unknown(false);
 
     return schema.validate(venue);

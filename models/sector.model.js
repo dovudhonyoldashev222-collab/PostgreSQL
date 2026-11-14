@@ -12,5 +12,12 @@ module.exports = (sequelize, DataTypes) => {
         },
     });
 
+    Sector.associate = (models) => {
+        Sector.hasMany(models.Seat, {
+            foreignKey: "sector_id",
+            as: "seats",
+        });
+    };
+
     return Sector;
 };

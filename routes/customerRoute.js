@@ -1,19 +1,12 @@
-
 const express = require("express");
+const controller = require("../controller/customerController");
+
 const router = express.Router();
-
-const customerController = require("../controller/customerController");
-
-router.post("/", customerController.createCustomer);
-router.get("/", customerController.getAllCustomers);
-router.get("/:id", customerController.getCustomerById);
-router.put("/:id", customerController.updateCustomer);
-router.delete("/:id", customerController.deleteCustomer);
 
 /**
  * @swagger
  * tags:
- *   name: Customers
+ *   name: Customer
  *   description: Customer CRUD
  */
 
@@ -21,118 +14,143 @@ router.delete("/:id", customerController.deleteCustomer);
  * @swagger
  * /api/customers:
  *   post:
- *     summary: Customer yaratish
- *     tags: [Customers]
+ *     tags: [Customer]
+ *     summary: Create Customer
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
  *             type: object
- *             required:
- *               - name
- *               - email
- *               - address
- *             properties:
- *               name:
- *                 type: string
- *                 example: Ali Valiyev
- *               email:
- *                 type: string
- *                 format: email
- *                 example: ali@example.com
- *               address:
- *                 type: string
- *                 example: Tashkent, Uzbekistan
  *     responses:
  *       201:
- *         description: Customer yaratildi
+ *         description: Record created
  *       400:
- *         description: Noto'g'ri ma'lumot
+ *         description: Invalid input
  *       409:
- *         description: Email mavjud
+ *         description: Duplicate value
  *       500:
- *         description: Server xatosi
- *
+ *         description: Server error
+ */
+router.post("/", controller.createCustomer);
+
+/**
+ * @swagger
+ * /api/customers:
  *   get:
- *     summary: Barcha customerlarni olish
- *     tags: [Customers]
+ *     tags: [Customer]
+ *     summary: List customers
  *     responses:
  *       200:
- *         description: Customerlar ro'yxati
+ *         description: Records returned
  *       500:
- *         description: Server xatosi
- *
+ *         description: Server error
+ */
+router.get("/", controller.getAllCustomers);
+
+/**
+ * @swagger
+ * /api/customers/search:
+ *   get:
+ *     tags: [Customer]
+ *     summary: Search customers
+ *     parameters:
+ *       - in: query
+ *         name: query
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Search term
+ *     responses:
+ *       200:
+ *         description: Matching records returned
+ *       400:
+ *         description: Search query is required
+ *       500:
+ *         description: Server error
+ */
+router.get("/search", controller.searchCustomers);
+
+/**
+ * @swagger
  * /api/customers/{id}:
  *   get:
- *     summary: Bitta customer olish
- *     tags: [Customers]
+ *     tags: [Customer]
+ *     summary: Get Customer by ID
  *     parameters:
  *       - in: path
  *         name: id
- *         required: true
  *         schema:
  *           type: integer
- *           minimum: 1
+ *         required: true
  *     responses:
  *       200:
- *         description: Customer topildi
+ *         description: Record returned
  *       400:
- *         description: Noto'g'ri ID
+ *         description: Invalid ID
  *       404:
- *         description: Customer topilmadi
- *
+ *         description: Record not found
+ *       500:
+ *         description: Server error
+ */
+router.get("/:id", controller.getCustomerById);
+
+/**
+ * @swagger
+ * /api/customers/{id}:
  *   put:
- *     summary: Customer yangilash
- *     tags: [Customers]
+ *     tags: [Customer]
+ *     summary: Update Customer
  *     parameters:
  *       - in: path
  *         name: id
- *         required: true
  *         schema:
  *           type: integer
- *           minimum: 1
+ *         required: true
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
  *             type: object
- *             properties:
- *               name:
- *                 type: string
- *               email:
- *                 type: string
- *                 format: email
- *               address:
- *                 type: string
  *     responses:
  *       200:
- *         description: Customer yangilandi
+ *         description: Record updated
  *       400:
- *         description: Noto'g'ri ma'lumot
+ *         description: Invalid input
  *       404:
- *         description: Customer topilmadi
+ *         description: Record not found
  *       409:
- *         description: Email mavjud
- *
+ *         description: Duplicate value
+ *       500:
+ *         description: Server error
+ */
+router.put("/:id", controller.updateCustomer);
+
+/**
+ * @swagger
+ * /api/customers/{id}:
  *   delete:
- *     summary: Customer o'chirish
- *     tags: [Customers]
+ *     tags: [Customer]
+ *     summary: Delete Customer
  *     parameters:
  *       - in: path
  *         name: id
- *         required: true
  *         schema:
  *           type: integer
- *           minimum: 1
+ *         required: true
  *     responses:
  *       200:
- *         description: Customer o'chirildi
+ *         description: Record deleted
  *       400:
- *         description: Noto'g'ri ID
+ *         description: Invalid ID
  *       404:
- *         description: Customer topilmadi
+ *         description: Record not found
+ *       409:
+ *         description: Record is referenced by another record
+ *       500:
+ *         description: Server error
  */
+router.delete("/:id", controller.deleteCustomer);
 
 module.exports = router;

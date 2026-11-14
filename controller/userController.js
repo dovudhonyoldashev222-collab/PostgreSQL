@@ -18,12 +18,10 @@ const safeUser = (user) => {
 
     return data;
 };
-
 // ID TEKSHIRISH
 const isValidId = (id) => {
     return /^\d+$/.test(id) && Number(id) > 0;
 };
-
 // DATABASE XATOLARINI TEKSHIRISH
 const handleError = (res, error) => {
     console.error("DATABASE ERROR:", error);
@@ -211,3 +209,4 @@ exports.searchUsers = async (req, res) => {
         return handleError(res, error);
     }
 };
+

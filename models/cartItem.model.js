@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.BIGINT,
             allowNull: false,
         },
-        seat_id: {
+        ticket_id: {
             type: DataTypes.BIGINT,
             allowNull: false,
         },
@@ -20,9 +20,9 @@ module.exports = (sequelize, DataTypes) => {
             foreignKey: "cart_id",
             as: "cart",
         });
-        CartItem.belongsTo(models.Seat, {
-            foreignKey: "seat_id",
-            as: "seat",
+        CartItem.belongsTo(models.Ticket, {
+            foreignKey: "ticket_id",
+            as: "ticket",
         });
     };
 

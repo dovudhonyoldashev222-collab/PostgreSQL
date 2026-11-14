@@ -6,6 +6,7 @@ const cors = require("cors");
 dotenv.config();
 
 const sequelize = require("./config/database");
+require("./models");
 const setupSwagger = require("./swagger/swagger");
 
 const app = express();
@@ -22,7 +23,7 @@ setupSwagger(app);
 
 if (require.main === module) {
     sequelize
-        .sync()
+        .sync({ alter: true })
         .then(() => {
             console.log("Bazaga ulandi");
 

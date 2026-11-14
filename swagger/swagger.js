@@ -1,4 +1,6 @@
+const path = require("path");
 const swaggerUi = require("swagger-ui-express");
+const swaggerJsdoc = require("swagger-jsdoc");
 const { resources } = require("../routes/resourceRoutes");
 
 const toOpenApiType = (attribute) => {
@@ -161,6 +163,29 @@ resources.forEach(({ name, path, model }) => {
             },
         },
     };
+    paths[`/api/${path}/search`] = {
+        get: {
+            tags: [name],
+            summary: `Search ${path}`,
+            parameters: [
+                {
+                    name: "query",
+                    in: "query",
+                    required: true,
+                    schema: { type: "string", minLength: 1 },
+                    description: "Search term",
+                },
+            ],
+            responses: {
+                200: response(
+                    "Matching records returned",
+                    successSchema({ type: "array", items: dataSchema }, includeMessage)
+                ),
+                400: response("Search query is required", errorSchema),
+                500: response("Server error", errorSchema),
+            },
+        },
+    };
     paths[`/api/${path}/{id}`] = {
         get: {
             tags: [name],
@@ -216,55 +241,25 @@ resources.forEach(({ name, path, model }) => {
     };
 });
 
-paths["/api/users/search"] = {
-    get: {
-        tags: ["User"],
-        summary: "Search users by name or email",
-        parameters: [
-            {
-                name: "query",
-                in: "query",
-                required: true,
-                schema: { type: "string", minLength: 1 },
-                description: "Search term matched against user name and email",
-            },
-        ],
-        responses: {
-            200: {
-                description: "Matching users returned",
-                content: {
-                    "application/json": {
-                        schema: {
-                            type: "object",
-                            properties: {
-                                data: {
-                                    type: "array",
-                                    items: { $ref: "#/components/schemas/User" },
-                                },
-                            },
-                            required: ["data"],
-                        },
-                    },
-                },
-            },
-            400: {
-                description: "Search query is required",
-                content: { "application/json": { schema: errorSchema } },
-            },
-            500: {
-                description: "Server error",
-                content: { "application/json": { schema: errorSchema } },
-            },
+const jsdocSpec = swaggerJsdoc({
+    definition: {
+        openapi: "3.0.0",
+        info: {
+            title: "Ticket booking API",
+            version: "1.0.0",
         },
     },
-};
+    apis: [path.join(__dirname, "../routes/*.js")],
+});
+
+Object.assign(paths, jsdocSpec.paths || {});
 
 const swaggerSpec = {
     openapi: "3.0.0",
     info: {
         title: "Ticket booking API",
         version: "1.0.0",
-        description: "CRUD API generated from the Sequelize models, including user search.",
+        description: "CRUD and search API generated from Sequelize models and route Swagger comments.",
     },
     paths,
     components: {

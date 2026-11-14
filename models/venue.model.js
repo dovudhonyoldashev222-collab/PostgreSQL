@@ -29,6 +29,10 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.SMALLINT,
             allowNull: true,
         },
+        region_id: {
+            type: DataTypes.SMALLINT,
+            allowNull: false,
+        },
     });
 
     Venue.associate = (models) => {
@@ -51,6 +55,10 @@ module.exports = (sequelize, DataTypes) => {
         Venue.belongsTo(models.District, {
             foreignKey: "district_id",
             as: "district",
+        });
+        Venue.belongsTo(models.Region, {
+            foreignKey: "region_id",
+            as: "region",
         });
     };
 

@@ -1,162 +1,156 @@
 const express = require("express");
+const controller = require("../controller/userController");
+
 const router = express.Router();
-const userController = require("../controller/userController");
 
 /**
  * @swagger
  * tags:
- *   name: Users
- *   description: User management
+ *   name: User
+ *   description: User CRUD
  */
 
 /**
  * @swagger
  * /api/users:
  *   post:
- *     tags: [Users]
- *     summary: Create a new user
+ *     tags: [User]
+ *     summary: Create User
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
  *             type: object
- *             properties:
- *               name:
- *                 type: string
- *               email:
- *                 type: string
- *               password:
- *                 type: string
  *     responses:
  *       201:
- *         description: User created
+ *         description: Record created
  *       400:
  *         description: Invalid input
+ *       409:
+ *         description: Duplicate value
  *       500:
  *         description: Server error
  */
-router.post("/", userController.createUser);
+router.post("/", controller.createUser);
 
 /**
  * @swagger
  * /api/users:
  *   get:
- *     tags: [Users]
- *     summary: Get all users
+ *     tags: [User]
+ *     summary: List users
  *     responses:
  *       200:
- *         description: List of users
+ *         description: Records returned
  *       500:
  *         description: Server error
  */
-router.get("/", userController.getUsers);
+router.get("/", controller.getUsers);
 
 /**
  * @swagger
  * /api/users/search:
  *   get:
- *     tags: [Users]
- *     summary: Search users by name or email
+ *     tags: [User]
+ *     summary: Search users
  *     parameters:
  *       - in: query
  *         name: query
  *         schema:
  *           type: string
  *         required: true
- *         description: Search query for user name or email
+ *         description: Search term
  *     responses:
  *       200:
- *         description: List of users matching the search query
+ *         description: Matching records returned
  *       400:
  *         description: Search query is required
  *       500:
  *         description: Server error
  */
-router.get("/search", userController.searchUsers);
+router.get("/search", controller.searchUsers);
 
 /**
  * @swagger
  * /api/users/{id}:
  *   get:
- *     tags: [Users]
- *     summary: Get user by ID
+ *     tags: [User]
+ *     summary: Get User by ID
  *     parameters:
  *       - in: path
  *         name: id
  *         schema:
  *           type: integer
  *         required: true
- *         description: User ID
  *     responses:
  *       200:
- *         description: User details
+ *         description: Record returned
+ *       400:
+ *         description: Invalid ID
  *       404:
- *         description: User not found
+ *         description: Record not found
  *       500:
  *         description: Server error
  */
-router.get("/:id", userController.getUserById);
+router.get("/:id", controller.getUserById);
 
 /**
  * @swagger
  * /api/users/{id}:
  *   put:
- *     tags: [Users]
- *     summary: Update user by ID
+ *     tags: [User]
+ *     summary: Update User
  *     parameters:
  *       - in: path
  *         name: id
  *         schema:
  *           type: integer
  *         required: true
- *         description: User ID
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
  *             type: object
- *             properties:
- *               name:
- *                 type: string
- *               email:
- *                 type: string
- *               password:
- *                 type: string
  *     responses:
  *       200:
- *         description: User updated
+ *         description: Record updated
  *       400:
  *         description: Invalid input
  *       404:
- *         description: User not found
+ *         description: Record not found
+ *       409:
+ *         description: Duplicate value
  *       500:
  *         description: Server error
  */
-router.put("/:id", userController.updateUser);
+router.put("/:id", controller.updateUser);
 
 /**
  * @swagger
  * /api/users/{id}:
  *   delete:
- *     tags: [Users]
- *     summary: Delete user by ID
+ *     tags: [User]
+ *     summary: Delete User
  *     parameters:
  *       - in: path
  *         name: id
  *         schema:
  *           type: integer
  *         required: true
- *         description: User ID
  *     responses:
  *       200:
- *         description: User deleted
+ *         description: Record deleted
+ *       400:
+ *         description: Invalid ID
  *       404:
- *         description: User not found
+ *         description: Record not found
+ *       409:
+ *         description: Record is referenced by another record
  *       500:
  *         description: Server error
  */
-router.delete("/:id", userController.deleteUser);
+router.delete("/:id", controller.deleteUser);
 
 module.exports = router;

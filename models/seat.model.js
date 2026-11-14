@@ -33,6 +33,10 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.SMALLINT,
             allowNull: true,
         },
+        sector_id: {
+            type: DataTypes.SMALLINT,
+            allowNull: false,
+        },
     });
 
     Seat.associate = (models) => {
@@ -44,9 +48,9 @@ module.exports = (sequelize, DataTypes) => {
             foreignKey: "seat_type_id",
             as: "seatType",
         });
-        Seat.hasMany(models.CartItem, {
-            foreignKey: "seat_id",
-            as: "cartItems",
+        Seat.belongsTo(models.Sector, {
+            foreignKey: "sector_id",
+            as: "sector",
         });
         Seat.hasMany(models.Ticket, {
             foreignKey: "seat_id",

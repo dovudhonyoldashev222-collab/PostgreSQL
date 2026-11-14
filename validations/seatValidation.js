@@ -9,6 +9,7 @@ const validateSeat = (seat) => {
         location: Joi.string().allow(null, ""),
         geometry: Joi.any().allow(null),
         scheme_id: Joi.number().integer().allow(null),
+        sector_id: Joi.number().integer().required(),
     }).unknown(false);
 
     return schema.validate(seat);
@@ -23,6 +24,7 @@ const validateSeatUpdate = (seat) => {
         location: Joi.string().allow(null, ""),
         geometry: Joi.any().allow(null),
         scheme_id: Joi.number().integer().allow(null),
+        sector_id: Joi.number().integer(),
     }).min(1).unknown(false);
 
     return schema.validate(seat);

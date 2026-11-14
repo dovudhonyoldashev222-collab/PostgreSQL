@@ -76,10 +76,6 @@ module.exports = (sequelize, DataTypes) => {
             foreignKey: "event_id",
             as: "tickets",
         });
-        Event.hasMany(models.CartItem, {
-            foreignKey: "event_id",
-            as: "cartItems",
-        });
     };
 
     return Event;

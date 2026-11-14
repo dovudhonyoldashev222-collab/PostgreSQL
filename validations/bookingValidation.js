@@ -2,8 +2,7 @@ const Joi = require("joi");
 
 const validateBooking = (booking) => {
     const schema = Joi.object({
-        customer_id: Joi.number().integer().required(),
-        cart_id: Joi.number().integer().allow(null),
+        cart_id: Joi.number().integer().required(),
         finishedAt: Joi.date().allow(null),
         payment_method_id: Joi.number().integer().allow(null),
         delivery_method_id: Joi.number().integer().allow(null),
@@ -16,8 +15,7 @@ const validateBooking = (booking) => {
 
 const validateBookingUpdate = (booking) => {
     const schema = Joi.object({
-        customer_id: Joi.number().integer(),
-        cart_id: Joi.number().integer().allow(null),
+        cart_id: Joi.number().integer(),
         finishedAt: Joi.date().allow(null),
         payment_method_id: Joi.number().integer().allow(null),
         delivery_method_id: Joi.number().integer().allow(null),

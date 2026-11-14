@@ -1,5 +1,5 @@
 const { Customer } = require("../models");
-const { serialize } = require("./crudHelpers");
+const { serialize, searchModel, handleError } = require("./crudHelpers");
 
 exports.createCustomer = async (req, res) => {
     try {
@@ -183,5 +183,19 @@ exports.deleteCustomer = async (req, res) => {
         return res.status(500).json({
             message: "Customerni o'chirishda xatolik",
         });
+    }
+};
+
+
+exports.searchCustomers = async (req, res) => {
+    try {
+        const query = req.query.query?.trim();
+        if (!query) {
+            return res.status(400).json({ message: "Search query is required" });
+        }
+        const records = await searchModel(Customer, query);
+        return res.status(200).json({ data: records.map(serialize) });
+    } catch (error) {
+        return handleError(res, error);
     }
 };

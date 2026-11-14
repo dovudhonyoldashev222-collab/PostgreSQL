@@ -21,6 +21,10 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.SMALLINT,
             allowNull: true,
         },
+        flat_id: {
+            type: DataTypes.BIGINT,
+            allowNull: true,
+        },
         street: {
             type: DataTypes.STRING,
             allowNull: true,
@@ -51,6 +55,10 @@ module.exports = (sequelize, DataTypes) => {
         CustomerAddress.belongsTo(models.District, {
             foreignKey: "district_id",
             as: "district",
+        });
+        CustomerAddress.belongsTo(models.Flat, {
+            foreignKey: "flat_id",
+            as: "flat",
         });
     };
 

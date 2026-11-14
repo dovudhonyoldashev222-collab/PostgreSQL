@@ -5,13 +5,9 @@ module.exports = (sequelize, DataTypes) => {
             autoIncrement: true,
             primaryKey: true,
         },
-        customer_id: {
-            type: DataTypes.BIGINT,
-            allowNull: false,
-        },
         cart_id: {
             type: DataTypes.BIGINT,
-            allowNull: true,
+            allowNull: false,
         },
         finishedAt: {
             type: DataTypes.DATE,
@@ -36,10 +32,6 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     Booking.associate = (models) => {
-        Booking.belongsTo(models.Customer, {
-            foreignKey: "customer_id",
-            as: "customer",
-        });
         Booking.belongsTo(models.Cart, {
             foreignKey: "cart_id",
             as: "cart",
@@ -59,10 +51,6 @@ module.exports = (sequelize, DataTypes) => {
         Booking.belongsTo(models.TicketStatus, {
             foreignKey: "status_id",
             as: "status",
-        });
-        Booking.hasMany(models.Ticket, {
-            foreignKey: "booking_id",
-            as: "tickets",
         });
     };
 

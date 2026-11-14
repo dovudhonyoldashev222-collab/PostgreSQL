@@ -1,6 +1,6 @@
 const { District } = require("../models");
 const { validateDistrict, validateDistrictUpdate } = require("../validations/districtValidation");
-const { serialize, parseId, handleError } = require("./crudHelpers");
+const { serialize, parseId, handleError, searchModel } = require("./crudHelpers");
 
 exports.getAllDistricts = async (_req, res) => {
     try {
@@ -78,6 +78,20 @@ exports.deleteDistrict = async (req, res) => {
         }
         await record.destroy();
         return res.status(200).json({ message: "Record deleted successfully" });
+    } catch (error) {
+        return handleError(res, error);
+    }
+};
+
+
+exports.searchDistricts = async (req, res) => {
+    try {
+        const query = req.query.query?.trim();
+        if (!query) {
+            return res.status(400).json({ message: "Search query is required" });
+        }
+        const records = await searchModel(District, query);
+        return res.status(200).json({ data: records.map(serialize) });
     } catch (error) {
         return handleError(res, error);
     }

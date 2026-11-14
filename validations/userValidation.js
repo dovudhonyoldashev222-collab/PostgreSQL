@@ -7,7 +7,6 @@ const validateUser = (user) => {
         email: Joi.string().email().required(),
         password: Joi.string().min(6).required(),
         customer_id: Joi.number().integer().positive().allow(null),
-        car_id: Joi.number().integer().positive().allow(null),
     }).unknown(false);
 
     return schema.validate(user);
@@ -19,7 +18,6 @@ const validateUserUpdate = (user) => {
         email: Joi.string().email(),
         password: Joi.string().min(6),
         customer_id: Joi.number().integer().positive().allow(null),
-        car_id: Joi.number().integer().positive().allow(null),
     }).min(1).unknown(false);
 
     return schema.validate(user);
