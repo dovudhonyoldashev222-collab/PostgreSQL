@@ -8,6 +8,7 @@
   "main": "app.js",
   "scripts": {
     "dev": "nodemon app.js",
+    "script": "node app.js",
     "test": "node .verify-models.js",
     "tables": "node .list-tables.js",
     "relations": "node .test-relations.js"
